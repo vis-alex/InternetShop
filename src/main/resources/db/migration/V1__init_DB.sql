@@ -13,9 +13,6 @@ create table users
     bucket_id int8,
     primary key (id)
 );
-alter table if exists users
-    add constraint users_fk_bucket
-        foreign key (bucket_id) references buckets;
 
 -- BUCKETS
 drop table if exists buckets cascade;
@@ -30,6 +27,9 @@ create table buckets
 alter table if exists buckets
     add constraint buckets_fk_user
         foreign key (user_id) references users;
+alter table if exists users
+    add constraint users_fk_bucket
+        foreign key (bucket_id) references buckets;
 
 -- PRODUCTS
 drop table if exists products cascade;
