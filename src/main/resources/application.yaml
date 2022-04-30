@@ -1,11 +1,11 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: validate
     show-sql: true
   datasource:
     url: jdbc:postgresql://localhost:5432/shop
     username: postgres
     password: postgres
   flyway:
-    baseline-on-migrate: false
+    baseline-on-migrate: true
