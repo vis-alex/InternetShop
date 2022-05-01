@@ -9,7 +9,7 @@
   <div th:insert="~{fragments/menu :: #nav-menu}"></div>
 
   <!-- th:object - get object from model by name -->
-  <form th:action="@{/user/new}" th:object="${user}" method="post">
+  <form th:action="@{/users/new}" th:object="${user}" method="post">
     <table border="1">
       <tr>
         <td>Name</td>

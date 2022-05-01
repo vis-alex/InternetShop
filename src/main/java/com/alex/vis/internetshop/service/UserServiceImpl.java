@@ -5,6 +5,7 @@ import com.alex.vis.internetshop.model.Role;
 import com.alex.vis.internetshop.model.User;
 import com.alex.vis.internetshop.repo.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
+    private final ApplicationContext ctx;
 
     @Override
     public boolean save(UserDTO userDTO) {
@@ -30,7 +32,7 @@ public class UserServiceImpl implements UserService{
 
         User user = User.builder()
                 .name(userDTO.getUsername())
-                .password(userDTO.getPassword())
+                .password(ctx.getBean(PasswordEncoder.class).encode(userDTO.getPassword()))
                 .email(userDTO.getEmail())
                 .role(Role.CLIENT)
                 .build();
