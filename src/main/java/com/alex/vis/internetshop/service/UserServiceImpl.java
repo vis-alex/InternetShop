@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -42,10 +43,45 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    @Override
     public List<UserDTO> getAll() {
         return userRepository.findAll().stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public User findByName(String name) {
+        return userRepository.findFirstByName(name);
+    }
+
+    @Override
+    @Transactional
+    public void updateProfile(UserDTO dto) {
+        User savedUser = userRepository.findFirstByName(dto.getUsername());
+
+        if (savedUser == null) {
+            throw new RuntimeException("User not found by name" + dto.getUsername());
+        }
+
+        boolean isChanged = false;
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            savedUser.setPassword(ctx.getBean(PasswordEncoder.class).encode(dto.getPassword()));
+            isChanged = true;
+        }
+
+        if (!Objects.equals(dto.getEmail(), savedUser.getEmail())) {
+            savedUser.setEmail(dto.getEmail());
+            isChanged = true;
+        }
+
+        if (isChanged) {
+            userRepository.save(savedUser);
+        }
     }
 
     private UserDTO toDto(User user) {
