@@ -1,5 +1,6 @@
 package com.alex.vis.internetshop.service;
 
+import com.alex.vis.internetshop.dto.BucketDTO;
 import com.alex.vis.internetshop.model.Bucket;
 import com.alex.vis.internetshop.model.User;
 
@@ -9,4 +10,6 @@ public interface BucketService {
     Bucket createBucket(User user, List<Long> productIds);
 
     void addProducts(Bucket bucket, List<Long> productsIds);
+
+    BucketDTO getBucketByUser(String name);
 }
