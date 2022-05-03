@@ -7,5 +7,8 @@
 </head>
 <body>
     <div th:insert="~{fragments/menu :: #nav-menu}"></div>
+
+    <h2>Amount clicks --> <b th:text="${amountClicks}">0</b></h2>
+    <h2>Your UUID --> <b th:text="${uuid}">0</b></h2>
 </body>
 </html>
