@@ -4,11 +4,11 @@ import com.alex.vis.internetshop.dto.UserDTO;
 import com.alex.vis.internetshop.model.User;
 import com.alex.vis.internetshop.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.Objects;
@@ -25,10 +25,23 @@ public class UserController {
         return "userList";
     }
 
+    //By adding this annotation we resolve access to this method for Role ADMIN
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/new")
     public String newUser(Model model) {
         model.addAttribute("user", new UserDTO());
         return "user";
+    }
+
+    //This method for SpEL demonstrating
+    //Here #username takes value from context - @PathVariable("name") String username
+    @PostAuthorize("isAuthenticated() and #username == authentication.principal.username")
+    @GetMapping("/{name}/roles")
+    @ResponseBody
+    public String getRoles(@PathVariable("name") String username) {
+        System.out.println("In getRoles method");
+        User byName = userService.findByName(username);
+        return byName.getRole().name();
     }
 
     @PostMapping("/new")

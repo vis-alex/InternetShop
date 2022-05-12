@@ -1,0 +1,32 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://com/alex/vis/internetshop/ws/greeting"
+           targetNamespace="http://com/alex/vis/internetshop/ws/greeting"
+           elementFormDefault="qualified">
+
+    <!--Тут  гет запрос-->
+    <xs:element name="getGreetingRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--Тут ответ для метода гет-->
+    <xs:element name="getGreetingResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="greeting" type="tns:greeting"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!--Тут у нас появляется класс Гритинг с полями типа стринг и дата-->
+    <xs:complexType name="greeting">
+        <xs:sequence>
+            <xs:element name="text" type="xs:string"/>
+            <xs:element name="date" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
